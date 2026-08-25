@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Creative Data Visualization Portfolio — Art Student Approach to Analytics">
+<title>Data as Canvas | Creative Analytics Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0f12;
+    --paper: #fefefe;
+    --paper-alt: #fafafa;
+    --muted: #6b6b7a;
+    --accent: #d43f3f;
+    --accent-soft: #ffe8e8;
+    --blue: #2a5c8a;
+    --blue-soft: #e8f0f8;
+    --purple: #6b3fa0;
+    --purple-soft: #f3ecf8;
+    --green: #1e7d4e;
+    --green-soft: #e8f5ed;
+    --gold: #c4962e;
+    --gold-soft: #fdf6e3;
+    --stroke: #e0e0e5;
+    --shadow: 0 4px 24px rgba(15,15,18,0.06), 0 1px 3px rgba(15,15,18,0.04);
+    --shadow-strong: 0 12px 48px rgba(15,15,18,0.1), 0 4px 12px rgba(15,15,18,0.06);
+    --radius: 16px;
+    --radius-sm: 8px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #f5f5f7;
+      --paper: #141418;
+      --paper-alt: #1c1c22;
+      --muted: #8a8a9a;
+      --accent: #ff6b6b;
+      --accent-soft: #3a1a1a;
+      --blue: #6ab0e8;
+      --blue-soft: #1a2a3a;
+      --purple: #c8a2e8;
+      --purple-soft: #2a1a3a;
+      --green: #6ce8a8;
+      --green-soft: #1a3a2a;
+      --gold: #e8c86e;
+      --gold-soft: #3a3a1a;
+      --stroke: #2a2a32;
+      --shadow: 0 4px 24px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
+      --shadow-strong: 0 12px 48px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.2);
+    }
+  }
+
+  /* Animated background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, var(--accent-soft) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, var(--blue-soft) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, var(--purple-soft) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  /* Dark mode texture */
+  @media (prefers-color-scheme: dark) {
+    body::before {
+      background-image:
+        radial-gradient(circle at 20% 30%, var(--accent-soft) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, var(--blue-soft) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, var(--purple-soft) 0%, transparent 60%);
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, var(--accent-soft) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, var(--blue-soft) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, var(--purple-soft) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  /* Dark mode texture */
+  @media (prefers-color-scheme: dark) {
+    body::before {
+      background-image:
+        radial-gradient(circle at 20% 30%, var(--accent-soft) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, var(--blue-soft) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, var(--purple-soft) 0%, transparent 60%);
+    }
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    margin-bottom: 80px;
+    padding-top: 20px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--paper);
+    border: 1px solid var(--stroke);
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 28px;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+  }
+
+  .header-badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.9); }
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 7vw, 72px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 20px;
+    max-width: 900px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    font-size: clamp(18px, 2.5vw, 22px);
+    color: var(--muted);
+    max-width: 600px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* About */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 100px;
+    padding: 40px;
+    background: var(--paper);
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--blue), var(--purple), var(--gold));
+  }
+
+  .about-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .about-text p:first-of-type::first-letter {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    float: left;
+    line-height: 0.85;
+    margin-right: 8px;
+    color: var(--accent);
+  }
+
+  .skills-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .skill-pill {
+    background: var(--paper-alt);
+    border: 1px solid var(--stroke);
+    padding: 10px 18px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all 0.2s ease;
+    cursor: default;
+  }
+
+  .skill-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(212,63,63,0.15);
+  }
+
+  .skill-pill:nth-child(3n+1) { border-color: var(--accent); color: var(--accent); }
+  .skill-pill:nth-child(3n+2) { border-color: var(--blue); color: var(--blue); }
+  .skill-pill:nth-child(3n+3) { border-color: var(--purple); color: var(--purple); }
+
+  .about-visual {
+    position: relative;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--paper-alt) 0%, var(--paper) 100%);
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--stroke);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .about-visual svg { width: 80%; height: 80%; opacity: 0.15; }
+
+  /* Section Title */
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 400;
+    color: var(--ink);
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .section-title::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 6px; height: 60%;
+    background: linear-gradient(180deg, var(--accent), var(--blue));
+    border-radius: 3px;
+  }
+
+  .section-count {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    background: var(--paper);
+    border: 1px solid var(--stroke);
+    padding: 8px 16px;
+    border-radius: 100px;
+  }
+
+  /* Masonry Grid */
+  .masonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+    margin-bottom: 100px;
+  }
+
+  .project {
+    background: var(--paper);
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s cubic-bezier(0.2, 0.6, 0.3, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-strong);
+    border-color: transparent;
+  }
+
+  .project::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--project-color, var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.2, 0.6, 0.3, 1);
+    z-index: 1;
+  }
+
+  .project:hover::before { transform: scaleX(1); }
+
+  .project-img {
+    aspect-ratio: 16/10;
+    background: var(--paper-alt);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
+    filter: grayscale(15%) contrast(1.05);
+  }
+
+  .project:hover .project-img img {
+    transform: scale(1.05);
+    filter: grayscale(0%) contrast(1.1);
+  }
+
+  .project-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(15,15,18,0.3) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .project:hover .project-img::after { opacity: 1; }
+
+  .project-type {
+    position: absolute;
+    top: 16px; left: 16px;
+    z-index: 2;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 6px 12px;
+    border-radius: 100px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--stroke);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--shadow);
+  }
+
+  .project-content {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .project p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    flex: 1;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .project-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--paper-alt);
+    border: 1px solid var(--stroke);
+    color: var(--muted);
+  }
+
+  .project-links {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid var(--stroke);
+  }
+
+  .link-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .link-btn.primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .link-btn.primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .link-btn.secondary {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--stroke);
+  }
+  .link-btn.secondary:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* Colors per project */
+  .project[data-color="accent"] { --project-color: var(--accent); }
+  .project[data-color="blue"] { --project-color: var(--blue); }
+  .project[data-color="purple"] { --project-color: var(--purple); }
+  .project[data-color="green"] { --project-color: var(--green); }
+  .project[data-color="gold"] { --project-color: var(--gold); }
+  .project[data-color="teal"] { --project-color: #2a9d8f; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 60px 20px 30px;
+    border-top: 1px solid var(--stroke);
+    margin-top: 40px;
+  }
+
+  .footer-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border: 1px solid var(--stroke);
+    border-radius: 100px;
+    transition: all 0.2s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    header { flex-direction: column; align-items: flex-start; gap: 24px; }
+    header > div:last-child { align-items: flex-start; text-align: left; }
+    .about { grid-template-columns: 1fr; gap: 32px; }
+    .about-visual { display: none; }
+    .about-text p::first-letter { float: none; font-size: inherit; color: inherit; }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 40px 16px 80px; }
+    .masonry { grid-template-columns: 1fr; }
+    .project-links { flex-direction: column; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header style="display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; padding-top:20px;">
+    <div style="min-width:0;">
+      <div class="header-badge">
+        <span></span>
+        Creative Data Visualization
+      </div>
+      <h1>Turning complexity into <span>visual stories</span></h1>
+      <p class="subtitle">A business and finance student's approach to analytics — turning raw data into structured insight, from survey responses to strategic forecasting.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; text-align:center; flex-shrink:0;">
+      <img src="Headshot_crisp_white.png" alt="Siphe D." style="width:110px; height:110px; border-radius:50%; object-fit:cover; margin-top:10px; border:2px solid var(--stroke); box-shadow:var(--shadow);" loading="lazy">
+    </div>
+  </header>
+
+  <section class="about">
+    <div class="about-text">
+      <h2>The Sketchbook</h2>
+      <p>I treated each cleaning step carefully and meticulously, mapping survey responses to structured values and computing precise metrics to uncover meaningful gaps.</p>
+      <p>The result? Two visual languages. <strong>Economist publication style</strong> for static reports — slate backgrounds, white gridlines, that signature red tag. And <strong>interactive Plotly dashboards</strong> for stakeholders who want to poke, hover, and filter. Both built from one reusable style module.</p>
+      <div class="skills-cloud">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">Pandas</span>
+        <span class="skill-pill">Matplotlib</span>
+        <span class="skill-pill">Seaborn</span>
+        <span class="skill-pill">Plotly</span>
+        <span class="skill-pill">IPA Framework</span>
+        <span class="skill-pill">Survey Analysis</span>
+        <span class="skill-pill">Dashboard Design</span>
+        <span class="skill-pill">Color Theory</span>
+        <span class="skill-pill">Typography</span>
+      </div>
+    </div>
+    <div class="about-visual" aria-hidden="true">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="1.5" stroke-dasharray="8 4"/>
+        <path d="M100 30 L100 170 M30 100 L170 100" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4"/>
+        <circle cx="100" cy="100" r="40" stroke="currentColor" stroke-width="1"/>
+        <ellipse cx="100" cy="100" rx="60" ry="30" stroke="currentColor" stroke-width="1" transform="rotate(45 100 100)"/>
+        <circle cx="60" cy="60" r="3" fill="currentColor"/>
+        <circle cx="140" cy="140" r="3" fill="currentColor"/>
+        <circle cx="140" cy="60" r="3" fill="currentColor"/>
+        <circle cx="60" cy="140" r="3" fill="currentColor"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Tunghai GMBA Survey -->
+  <div class="section-header">
+    <h2 class="section-title">Tunghai GMBA Homepage UX Survey</h2>
+    <span class="section-count">7 Visualizations</span>
+  </div>
+
+  <div class="masonry">
+    <!-- Q2 -->
+    <article class="project" data-color="accent">
+      <div class="project-img">
+        <span class="project-type">Categorical</span>
+        <img src="q2_economist_bar.png" alt="Q2: Discovery channels - horizontal bar chart economist style" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Where They Found Us (Q2)</h3>
+        <p>Word of mouth dominates — 43% heard from friends or family. Alumni referrals (14%) beat university website (18%). The red Economist tag anchors the insight: <em>invest in ambassador programs, not SEO.</em></p>
+        <div class="project-tags">
+          <span class="project-tag">Horizontal Bar</span>
+          <span class="project-tag">Economist Theme</span>
+          <span class="project-tag">Actionable Title</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="q2_economist_bar.png" target="_blank">View Static</a>
+          <a class="link-btn secondary" href="plot_q2.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Q3/Q4 Grouped -->
+    <article class="project" data-color="blue">
+      <div class="project-img">
+        <span class="project-type">Gap Analysis</span>
+        <img src="q3_q4_publication_chart.png" alt="Q3/Q4: Importance vs Sufficiency grouped bars" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Importance vs. Sufficiency (Q3 vs Q4)</h3>
+        <p>Ten information areas. Two bars each. The gaps tell the story: Career Outcomes (−0.93), Work Permits (−0.60), Visa/ARC (−0.50). Published as PDF/PNG for the homepage renewal team.</p>
+        <div class="project-tags">
+          <span class="project-tag">Grouped Bars</span>
+          <span class="project-tag">Seaborn</span>
+          <span class="project-tag">Gap = Insight</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="q3_q4_publication_chart.png" target="_blank">View Static</a>
+          <a class="link-btn secondary" href="plot_q3_q4_publication.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- IPA Quadrant -->
+    <article class="project" data-color="purple">
+      <div class="project-img">
+        <span class="project-type">Strategic</span>
+        <img src="ipa_scatter_quadrant.png" alt="IPA: 4-quadrant scatter with mean splits" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Importance–Performance Map</h3>
+        <p>Sufficiency on X, Importance on Y. Mean lines carve four zones. <span style="color:#2e7d32;font-weight:600">Keep Up</span> (top-right), <span style="color:#e65100;font-weight:600">Concentrate Here</span> (top-left), <span style="color:#757575;font-weight:600">Low Priority</span> (bottom-left), <span style="color:#1565c0;font-weight:600">Possible Overkill</span> (bottom-right). Visa, Career, Housing land in Concentrate.</p>
+        <div class="project-tags">
+          <span class="project-tag">IPA Framework</span>
+          <span class="project-tag">Quadrant Logic</span>
+          <span class="project-tag">Decision Tool</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="ipa_scatter_quadrant.png" target="_blank">View Static</a>
+          <a class="link-btn secondary" href="plot_ipa_scatter.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Q6 Economist -->
+    <article class="project" data-color="green">
+      <div class="project-img">
+        <span class="project-type">Barrier %</span>
+        <img src="q6_barriers_economist.png" alt="Q6: Barriers ranked - Economist style" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Barriers to Information (Q6)</h3>
+        <p>% rating each issue 4 or 5 (major barrier). Chinese-only pages lead at 61%. Navigation (54%), unclear contact (46%). Economist palette: slate bg, white grid, red tag. Built for the report appendix.</p>
+        <div class="project-tags">
+          <span class="project-tag">Likert→Numeric</span>
+          <span class="project-tag">Barrier %</span>
+          <span class="project-tag">Report Ready</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="q6_barriers_economist.png" target="_blank">View Static</a>
+          <a class="link-btn secondary" href="plot_q6_barriers.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Q6 Gradient -->
+    <article class="project" data-color="purple">
+      <div class="project-img">
+        <span class="project-type">Gradient</span>
+        <img src="q6_barriers_purple_pink.png" alt="Q6: Purple-pink gradient bars" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Same Data, Gradient Encoding</h3>
+        <p>Darker purple = higher barrier %. Continuous color for ordered magnitude — more intuitive than discrete hues. Demonstrates perceptual encoding principles from visualization theory.</p>
+        <div class="project-tags">
+          <span class="project-tag">Color Theory</span>
+          <span class="project-tag">Perceptual Viz</span>
+          <span class="project-tag">Matplotlib cmap</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="q6_barriers_purple_pink.png" target="_blank">View Static</a>
+          <a class="link-btn secondary" href="plot_q6_purple_pink.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Q6 Plotly Interactive -->
+    <article class="project" data-color="teal">
+      <div class="project-img">
+        <span class="project-type">Interactive</span>
+        <img src="q6_barriers_plotly.png" alt="Q6: Plotly dark theme interactive" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Interactive Barrier Explorer</h3>
+        <p>Dark theme Plotly. Hover for exact % + count. Click legend to isolate. 45° rotated labels with 2mm standoff. Responsive resize. Built for stakeholder workshops — no code required to explore.</p>
+        <div class="project-tags">
+          <span class="project-tag">Plotly</span>
+          <span class="project-tag">Dark Mode</span>
+          <span class="project-tag">Hover + Click</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="q6_barriers_plotly.html" target="_blank">Open Live</a>
+          <a class="link-btn secondary" href="plot_q6_plotly.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Dashboard -->
+    <article class="project" data-color="gold">
+      <div class="project-img">
+        <span class="project-type">Dashboard</span>
+        <img src="dashboard.png" alt="Dashboard: Gauge + Donut" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>GMBA UX Dashboard</h3>
+        <p>Two panels: semi-circular gauge (3.43/5 satisfaction, colored bands), donut for preferred formats (Step-by-step guide 46%). Unified hover, clickable legend. Single HTML, CDN Plotly, zero deps.</p>
+        <div class="project-tags">
+          <span class="project-tag">Gauge</span>
+          <span class="project-tag">Donut</span>
+          <span class="project-tag">Subplots</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="dashboard.html" target="_blank">Open Live</a>
+          <a class="link-btn secondary" href="build_dashboard_html.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- IPA Economist -->
+    <article class="project" data-color="accent">
+      <div class="project-img">
+        <span class="project-type">IPA · Econ</span>
+        <img src="ipa_scatter_economist.png" alt="IPA Scatter with Economist styling" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>IPA Scatter — Economist Edition</h3>
+        <p>Same four quadrants, new suit. Slate background, white gridlines, red brand tag. Tinted quadrant backgrounds for instant parsing. Title frames the action: <em>"Concentrate on visa, career and housing information."</em></p>
+        <div class="project-tags">
+          <span class="project-tag">Dual Style</span>
+          <span class="project-tag">Red Tag</span>
+          <span class="project-tag">Tinted Quads</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="ipa_scatter_economist.png" target="_blank">View Static</a>
+          <a class="link-btn secondary" href="plot_ipa_economist.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- Financial Data -->
+  <div class="section-header">
+    <h2 class="section-title">Financial Data</h2>
+    <span class="section-count">3 Visualizations</span>
+  </div>
+
+  <div class="masonry">
+    <article class="project" data-color="blue">
+      <div class="project-img">
+        <span class="project-type">Multi-Panel</span>
+        <img src="payments_dashboard.png" alt="Payments dashboard: gauge, donut, line" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Full Payments Dashboard</h3>
+        <p>18 months synthetic data across 5 methods with trend + seasonality. Gauge (satisfaction), Donut (method mix last 12m), Multi-series line (volume over time). Built with reusable <code>make_gauge()</code>, <code>make_donut()</code>, <code>make_line_chart()</code> from the style module.</p>
+        <div class="project-tags">
+          <span class="project-tag">Data Generation</span>
+          <span class="project-tag">Time Series</span>
+          <span class="project-tag">Style Module</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="payments_dashboard.html" target="_blank">Open Live</a>
+          <a class="link-btn secondary" href="payments_dashboard.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-color="green">
+      <div class="project-img">
+        <span class="project-type">Line Chart</span>
+        <img src="payments_line_chart.png" alt="Monthly volume line chart" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Monthly Volume Trend</h3>
+        <p>Standalone line + markers. Clean light theme, responsive, unified hover. Demonstrates the <code>make_line_chart()</code> helper — one call, consistent styling, ready for any monthly metric.</p>
+        <div class="project-tags">
+          <span class="project-tag">Line + Markers</span>
+          <span class="project-tag">Responsive</span>
+          <span class="project-tag">Helper Function</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="payments_line_chart.html" target="_blank">Open Live</a>
+          <a class="link-btn secondary" href="payments_dashboard.py" target="_blank">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-color="gold">
+      <div class="project-img" style="background: linear-gradient(135deg, #2a1a1a, #4a2a1a); display:flex; align-items:center; justify-content:center;">
+        <span class="project-type">Analyst Report</span>
+        <span style="font-family:'DM Serif Display',serif; font-size:28px; color:#fff; opacity:0.9; text-align:center;">ASTS<br>Analyst</span>
+      </div>
+      <div class="project-content">
+        <h3>ASTS Analyst Report</h3>
+        <p>Comprehensive analyst presentation covering valuation, financial metrics, and strategic outlook for the ASTS portfolio. Delivered as a PowerPoint report with structured slides for stakeholder review.</p>
+        <div class="project-tags">
+          <span class="project-tag">Valuation</span>
+          <span class="project-tag">Financial Metrics</span>
+          <span class="project-tag">Report</span>
+        </div>
+        <div class="project-links">
+          <a class="link-btn primary" href="ASTS_Analyst_Report.pptx" target="_blank">Open Report</a>
+          <a class="link-btn secondary" href="ASTS_Analyst_Report.pptx" target="_blank">Download</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- Research -->
+  <div class="section-header">
+    <h2 class="section-title">Research</h2>
+    <span class="section-count">6 Projects</span>
+  </div>
+
+  <div class="masonry">
+    <article class="project" data-color="accent">
+      <div class="project-img" style="background: linear-gradient(135deg, #2a1a2e, #3a1a4a); display:flex; align-items:center; justify-content:center;">
+        <span class="project-type">School Project</span>
+        <span style="font-family:'DM Serif Display',serif; font-size:36px; color:#fff; opacity:0.9;">Classification</span>
+      </div>
+      <div class="project-content">
+        <h3>Classification Models</h3>
+        <p>Practice and review notebooks on classification techniques — building predictive models, evaluating performance, and comparing approaches.</p>
+        <div class="project-tags"><span class="project-tag">Notebooks</span><span class="project-tag">Models</span></div>
+        <div class="project-links">
+          <a class="link-btn primary" href="School projects/Classification Models/Classification_models_practice.ipynb" target="_blank">Practice</a>
+          <a class="link-btn secondary" href="School projects/Classification Models/Classification_models_review.ipynb" target="_blank">Review</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-color="blue">
+      <div class="project-img" style="background: linear-gradient(135deg, #1a2a3a, #2a4a6a); display:flex; align-items:center; justify-content:center;">
+        <span class="project-type">School Project</span>
+        <span style="font-family:'DM Serif Display',serif; font-size:36px; color:#fff; opacity:0.9;">Correlation</span>
+      </div>
+      <div class="project-content">
+        <h3>Correlation Matrix</h3>
+        <p>Exploring variable relationships through correlation analysis — identifying strong drivers and multicollinearity patterns.</p>
+        <div class="project-tags"><span class="project-tag">Analysis</span><span class="project-tag">Matrix</span></div>
+        <div class="project-links">
+          <a class="link-btn primary" href="School projects/Correlation Matrix/Correlation_Matrix.ipynb" target="_blank">Notebook</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-color="purple">
+      <div class="project-img" style="background: linear-gradient(135deg, #2a1a3a, #4a2a6a); display:flex; align-items:center; justify-content:center;">
+        <span class="project-type">School Project</span>
+        <span style="font-family:'DM Serif Display',serif; font-size:36px; color:#fff; opacity:0.9;">Gradient Boost</span>
+      </div>
+      <div class="project-content">
+        <h3>Gradient Boosting</h3>
+        <p>Practice notebooks covering gradient boosting basics and default prediction applications using ensemble methods.</p>
+        <div class="project-tags"><span class="project-tag">Ensemble</span><span class="project-tag">Boosting</span></div>
+        <div class="project-links">
+          <a class="link-btn primary" href="School projects/Gradient Boosting/Gradient_Boosting_Basics.ipynb" target="_blank">Basics</a>
+          <a class="link-btn secondary" href="School projects/Gradient Boosting/GBoost_Default_Practice.ipynb" target="_blank">Practice</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-color="green">
+      <div class="project-img" style="background: linear-gradient(135deg, #1a3a2e, #2a6a4a); display:flex; align-items:center; justify-content:center;">
+        <span class="project-type">School Project</span>
+        <span style="font-family:'DM Serif Display',serif; font-size:36px; color:#fff; opacity:0.9;">Reviews</span>
+      </div>
+      <div class="project-content">
+        <h3>Reviews + Misc</h3>
+        <p>Module reviews, self-study scripts, data prep, and ML review materials collected throughout coursework.</p>
+        <div class="project-tags"><span class="project-tag">Reviews</span><span class="project-tag">Misc</span></div>
+        <div class="project-links">
+          <a class="link-btn primary" href="School projects/Reviews + Misc/Review.ipynb" target="_blank">Review</a>
+          <a class="link-btn secondary" href="School projects/Reviews + Misc/Module_2_Review.ipynb" target="_blank">Module 2</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-color="gold">
+      <div class="project-img" style="background: linear-gradient(135deg, #3a2a1a, #6a4a2a); display:flex; align-items:center; justify-content:center;">
+        <span class="project-type">School Project</span>
+        <span style="font-family:'DM Serif Display',serif; font-size:36px; color:#fff; opacity:0.9;">Swaziland AI</span>
+      </div>
+      <div class="project-content">
+        <h3>Swaziland AI Strategy</h3>
+        <p>Strategic slides and Python scripts outlining an AI strategy framework for the Eswatini context.</p>
+        <div class="project-tags"><span class="project-tag">Strategy</span><span class="project-tag">Slides</span></div>
+        <div class="project-links">
+          <a class="link-btn primary" href="School projects/Swaziland AI Strategy/Eswatini_AI_Strategy_Slides.pptx" target="_blank">Slides</a>
+          <a class="link-btn secondary" href="School projects/Swaziland AI Strategy/create_slides.py" target="_blank">Script</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-color="teal">
+      <div class="project-img">
+        <span class="project-type">School Project</span>
+        <img src="School projects/Taiwan Property Price Regression/House Prices.png" alt="Taiwan Property Price Regression" loading="lazy">
+      </div>
+      <div class="project-content">
+        <h3>Taiwan Property Price Regression</h3>
+        <p>House price regression analysis with data cleaning, ML/DL extensions, and visualization outputs for Taiwan property markets.</p>
+        <div class="project-tags"><span class="project-tag">Regression</span><span class="project-tag">Property</span></div>
+        <div class="project-links">
+          <a class="link-btn primary" href="School projects/Taiwan Property Price Regression/Taiwan_Property_regression.ipynb" target="_blank">Notebook</a>
+          <a class="link-btn secondary" href="School projects/Taiwan Property Price Regression/House Prices.png" target="_blank">Chart</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-text">Crafted with Python, curiosity, and too many Americanos · <span id="year"></span></p>
+  <div class="footer-links">
+    <a href="http://www.linkedin.com/in/sihle-dlamini-395ba622" target="_blank" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn</a>
+    <a href="mailto:Sihled577@gmail.com" target="_blank" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Email</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
